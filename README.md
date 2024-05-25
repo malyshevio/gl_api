@@ -4,6 +4,8 @@
 - /cmd
 	- /api
 		- main.go
+		- routers.go
+		- healthcheck.go
 - /internal
 - /migration
 - /remote
