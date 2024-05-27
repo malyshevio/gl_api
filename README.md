@@ -3,10 +3,14 @@
 - /bin
 - /cmd
 	- /api
-		- main.go
-		- routers.go
 		- healthcheck.go
+		- helpers.go
+		- main.go
+		- movies.go
+		- routers.go
 - /internal
+	- /data
+		- movies.go
 - /migration
 - /remote
 - go.mod
