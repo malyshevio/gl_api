@@ -3,11 +3,11 @@ package data
 import "time"
 
 type Movie struct {
-	ID        int64
-	CreatedAt time.Time // timestamp when added to DB
-	Title     string
-	Year      int32
-	Runtime   int32
-	Genres    []string
-	Version   int32
+	ID        int64     `json:"id"`
+	CreatedAt time.Time `json:"-"` // timestamp when added to DB
+	Title     string    `json:"title"`
+	Year      int32     `json:"year,omitempty"`
+	Runtime   int32     `json:"runtime,omitempty,string"`
+	Genres    []string  `json:"genres,omitempty"`
+	Version   int32     `json:"version"`
 }
