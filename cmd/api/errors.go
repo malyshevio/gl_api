@@ -31,7 +31,7 @@ func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Reque
 
 // notFoundResponse() шлем 404
 func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request) {
-	message := "Запрошеный ресурс не найден"
+	message := "Запрошенный ресурс не найден"
 	app.errorResponse(w, r, http.StatusNotFound, message)
 }
 
