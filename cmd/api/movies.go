@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -18,6 +19,25 @@ func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&input)
+	if err != nil {
+		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	fmt.Fprintf(w, "%+v\n", input)
+}
+
+func (app *application) unmarshalHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Foo string `json:"foo"`
+	}
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+
+	err = json.Unmarshal(body, &input)
 	if err != nil {
 		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
