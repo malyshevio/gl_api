@@ -27,6 +27,9 @@
 
 ### Endpoints
 
-| URL Pattern     | Handler            | Action                               |
-| --------------- | ------------------ | ------------------------------------ |
-| /v1/healthcheck | healthcheckHandler | Выведем немного информации о проекте |
+| Method | URL Pattern     | Handler            | Action                               |
+| ------ | --------------- | ------------------ | ------------------------------------ |
+| GET    | /v1/healthcheck | healthcheckHandler | Выведем немного информации о проекте |
+| GET    | /v1/movies/:id  | showMovieHandler   | Показать детали конкретного фильма   |
+| POST   | /v1/movies      | createMovieHandler | Создать новый фильм                  |
+
