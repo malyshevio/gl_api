@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -40,4 +42,43 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 	w.Write(js)
 
 	return nil
+}
+
+func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+	err := json.NewDecoder(r.Body).Decode(dst)
+	if err != nil {
+		var syntaxError *json.SyntaxError
+		var unmarshalTypeError *json.UnmarshalTypeError
+		var invalidUnmarshalError *json.InvalidUnmarshalError
+
+		switch {
+		// use errors.As for general type of errors
+		case error.As(err, &syntaxError):
+			return fmt.Errorf("Некоректрый формат JSON %d", syntaxError.Offset)
+
+			// use errors.Is for specific error
+		case errors.Is(err, io.ErrUnexpectedEOF):
+			return errors.New("В теле запроса есть ошибки форматирования")
+
+		case errors.As(err, &unmarshalTypeError):
+			if unmarshalTypeError.Field != "" {
+				return fmt.Errorf("тело запроса содержит некорректный JSON тип поля %q", unmarshalTypeError.Field)
+			}
+			return fmt.Errorf("тело запроса содержит некорректный JSON символ %q", unmarshalTypeError.Offset)
+
+		case errors.Is(err, io.EOF):
+			return errors.New("тело запроса не должно быть пустым")
+
+			// TODO panicking vs erroring is discussable
+		case errors.As(err, &invalidUnmarshalError):
+			panic(err)
+
+		default:
+			return err
+		}
+
+	}
+
+	return nil
+
 }
