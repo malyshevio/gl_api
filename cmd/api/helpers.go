@@ -53,7 +53,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 
 		switch {
 		// use errors.As for general type of errors
-		case error.As(err, &syntaxError):
+		case errors.As(err, &syntaxError):
 			return fmt.Errorf("Некоректрый формат JSON %d", syntaxError.Offset)
 
 			// use errors.Is for specific error
@@ -64,7 +64,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 			if unmarshalTypeError.Field != "" {
 				return fmt.Errorf("тело запроса содержит некорректный JSON тип поля %q", unmarshalTypeError.Field)
 			}
-			return fmt.Errorf("тело запроса содержит некорректный JSON символ %q", unmarshalTypeError.Offset)
+			return fmt.Errorf("тело запроса содержит некорректный JSON тип с символа %d", unmarshalTypeError.Offset)
 
 		case errors.Is(err, io.EOF):
 			return errors.New("тело запроса не должно быть пустым")
