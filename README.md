@@ -1,20 +1,20 @@
 ### Structure
 ```
-- /bin
-- /cmd
-	- /api
-		- healthcheck.go
-		- helpers.go
-		- main.go
-		- movies.go
-		- routers.go
-- /internal
-	- /data
-		- movies.go
-- /migration
-- /remote
-- go.mod
-- Makefile
+├─ /bin
+├─ /cmd
+│　└─ /api
+│　　　├─ healthcheck.go
+│　　　├─ helpers.go
+│　　　├─ main.go
+│　　　├─ movies
+│　　　└─ routers.go
+├─ /internal
+│　└─ /data
+│　　　└─ movies.go
+├─ /migration
+├─ /remote
+├─ go.mod
+└─ Makefile
 ```
 
 - `bin` собственно скомпилированный проект, подготовленный для деплоя например на прод
