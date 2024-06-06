@@ -33,3 +33,12 @@
 | GET    | /v1/movies/:id  | showMovieHandler   | Показать детали конкретного фильма   |
 | POST   | /v1/movies      | createMovieHandler | Создать новый фильм                  |
 
+
+## Migrations
+
+тулинг для миграции
+https://github.com/golang-migrate/migrate
+
+```shell
+$ migrate -path=./migrations -database=$GL_API_DSN up
+```
