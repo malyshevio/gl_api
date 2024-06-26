@@ -58,3 +58,21 @@ func (m MovieModel) Update(movie *Movie) error {
 func (m MovieModel) Delete(id int64) error {
 	return nil
 }
+
+// type MockMovieModel struct{}
+
+// func (m MockMovieModel) Insert(movie *Movie) error {
+// 	// mock
+// }
+
+// func (m MockMovieModel) Get(id int64) (*Movie, error) {
+// 	// mock 2
+// }
+
+// func (m MockMovieModel) Update(movie *Movie) error {
+// 	// mock 3
+// }
+
+// func (m MockMovieModel) Delete(id int64) error {
+// 	// mock 4
+// }
