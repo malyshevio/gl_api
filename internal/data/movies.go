@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"time"
 
 	"gl_api.malyshev.io/internal/validator"
@@ -32,4 +33,28 @@ func ValidateMovie(v *validator.Validator, movie *Movie) {
 
 	v.Check(movie.Runtime != 0, "runtime", "Не может быть пустым")
 	v.Check(movie.Runtime > 0, "runtime", "Должно быть положительным числом")
+}
+
+type MovieModel struct {
+	DB *sql.DB
+}
+
+// Insert method to movie DB
+func (m MovieModel) Insert(movie *Movie) error {
+	return nil
+}
+
+// Get method from movie DB
+func (m MovieModel) Get(id int64) (*Movie, error) {
+	return nil, nil
+}
+
+// Update method to movie DB
+func (m MovieModel) Update(movie *Movie) error {
+	return nil
+}
+
+// Delete from movie DB method
+func (m MovieModel) Delete(id int64) error {
+	return nil
 }
