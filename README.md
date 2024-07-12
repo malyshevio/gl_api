@@ -32,7 +32,7 @@
 | GET    | /v1/healthcheck | healthcheckHandler | Выведем немного информации о проекте |
 | GET    | /v1/movies/:id  | showMovieHandler   | Показать детали конкретного фильма   |
 | POST   | /v1/movies      | createMovieHandler | Создать новый фильм                  |
-| PUT    | /v1/movies/:id  | editMovieHandler   | Обновить информацию о фильме         |
+| PATCH  | /v1/movies/:id  | editMovieHandler   | Обновить информацию о фильме         |
 | DELETE | /v1/movies/:id  | deleteMovieHandler | Удалить фильм из базы                |
 
 
