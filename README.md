@@ -31,6 +31,7 @@
 | ------ | --------------- | ------------------ | ------------------------------------ |
 | GET    | /v1/healthcheck | healthcheckHandler | Выведем немного информации о проекте |
 | GET    | /v1/movies/:id  | showMovieHandler   | Показать детали конкретного фильма   |
+| GET    | /v1/movies      | listMoviesHandler  | Отобразить все фильмы с фильтрами    |
 | POST   | /v1/movies      | createMovieHandler | Создать новый фильм                  |
 | PATCH  | /v1/movies/:id  | editMovieHandler   | Обновить информацию о фильме         |
 | DELETE | /v1/movies/:id  | deleteMovieHandler | Удалить фильм из базы                |
@@ -46,4 +47,7 @@ $ migrate -path=./migrations -database=$GL_API_DSN up
 ```
 
 
-## CRUD
+## Фильтры
+пример 1:
+
+`/v1/movies?title=godzilla&genres=scifi,drama&page=1&page_size=5&sort=-year`

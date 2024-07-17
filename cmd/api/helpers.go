@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
+	"gl_api.malyshev.io/internal/validator"
 )
 
 func (app *application) readIDParam(r *http.Request) (int64, error) {
@@ -102,4 +104,43 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 
 	return nil
 
+}
+
+// readString() хелпер для получения строки с дефолт значением
+func (app *application) readString(qs url.Values, key string, defaultValue string) string {
+	// queryString разберем строку запроса
+	s := qs.Get(key)
+
+	if s == "" {
+		return defaultValue
+	}
+
+	return s
+}
+
+// readCSV() хелпер для получения массива путем разрыва строки по ","
+func (app *application) readCSV(qs url.Values, key string, defaultValue []string) []string {
+	csv := qs.Get(key)
+
+	if csv == "" {
+		return defaultValue
+	}
+
+	return strings.Split(csv, ",")
+}
+
+// readInt() хелпер для получения числа из строки с дефолт значением
+func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+	s := qs.Get(key)
+	if s == "" {
+		return defaultValue
+	}
+
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		v.AddError(key, "должно быть числом")
+		return defaultValue
+	}
+
+	return i
 }
