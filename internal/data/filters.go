@@ -1,6 +1,10 @@
 package data
 
-import "gl_api.malyshev.io/internal/validator"
+import (
+	"strings"
+
+	"gl_api.malyshev.io/internal/validator"
+)
 
 // фильтры для фильмов
 type Filters struct {
@@ -17,4 +21,21 @@ func ValidateFilters(v *validator.Validator, f Filters) {
 	v.Check(f.PageSize <= 100, "page_size", "не должно превышать 10 млн.")
 
 	v.Check(validator.In(f.Sort, f.SortSafelist...), "sort", "неверное значение сортировки")
+}
+
+func (f Filters) sortColumn() string {
+	for _, safeValue := range f.SortSafelist {
+		if f.Sort == safeValue {
+			return strings.TrimPrefix(f.Sort, "-")
+		}
+	}
+
+	panic("неверный параметр сортировки: " + f.Sort)
+}
+
+func (f Filters) sortDirection() string {
+	if strings.HasPrefix(f.Sort, "-") {
+		return "DESC"
+	}
+	return "ASC"
 }

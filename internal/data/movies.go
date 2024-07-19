@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/lib/pq"
@@ -163,13 +164,12 @@ func (m MovieModel) Delete(id int64) error {
 
 // GetAll() отдаем данные по нескольким фильмам применяем фильтры и сортировку
 func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*Movie, error) {
-	query := `
+	query := fmt.Sprintf(`
 		SELECT id, created_at, title, year, runtime, genres, version
 		FROM movies
 		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (genres @> $2 OR $2 = '{}')
-		ORDER BY id
-	`
+		ORDER BY %s %s, id ASC`, filters.sortColumn(), filters.sortDirection())
 	// Вариант 2 но (The club === Panther ==='THE')
 	// WHERE (STRPOS(LOWER(title), LOWER($1)) > 0 OR $1 = '')
 	// Вариант 3 но если мы хотим искать и ссуффиксами напримел 's или пробелом нужно будет или добавлять в запрос % или уточнять подстановку
