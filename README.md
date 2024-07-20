@@ -51,3 +51,15 @@ $ migrate -path=./migrations -database=$GL_API_DSN up
 пример 1:
 
 `/v1/movies?title=godzilla&genres=scifi,drama&page=1&page_size=5&sort=-year`
+
+
+## Логи
+
+| Ключ       | Описание                                        |
+| ---------- | ----------------------------------------------- |
+| level      | Уровень лога (INFO, ERROR, FATAL)               |
+| time       | UTC время                                       |
+| message    | сообщение в свободной форме                     |
+| properties | дополнительные параметры например ключ\значения |
+| trace      | стек вызова для отладки                         |
+
