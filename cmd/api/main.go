@@ -13,6 +13,7 @@ import (
 	// import driver
 	_ "github.com/lib/pq"
 	"gl_api.malyshev.io/internal/data"
+	"gl_api.malyshev.io/internal/jsonlog"
 )
 
 const version = "1.0.0" // just in case I don't generate it et
@@ -32,7 +33,7 @@ type config struct {
 // application hold the dependencies for HTTP handlers, helpers, middleware
 type application struct {
 	config config
-	logger *log.Logger
+	logger *jsonlog.Logger
 	models data.Models
 }
 
@@ -50,17 +51,17 @@ func main() {
 	flag.Parse()
 
 	//init new logger
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
 	// connect to DB
 	db, err := openDB(cfg)
 	if err != nil {
-		logger.Fatal(err)
+		logger.PrintFatal(err, nil)
 	}
 
 	defer db.Close()
 
-	logger.Printf("database connection successfully established")
+	logger.PrintInfo("database connection successfully established", nil)
 
 	// create App instance
 	app := &application{
@@ -75,11 +76,15 @@ func main() {
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
+		ErrorLog:     log.New(logger, "", 0),
 	}
 
-	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
+	logger.PrintInfo("starting server on", map[string]string{
+		"addr": srv.Addr,
+		"env":  cfg.env,
+	})
 	err = srv.ListenAndServe()
-	logger.Fatal(err)
+	logger.PrintFatal(err, nil)
 }
 
 // openDB() возвращаем подключеие к бд
