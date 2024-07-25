@@ -19,5 +19,6 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPatch, "/v1/movies/:id", app.updateMovieHandler)
 	router.HandlerFunc(http.MethodDelete, "/v1/movies/:id", app.deleteMovieHandler)
 
-	return app.recoveryPanic(router)
+	// 2 middleware
+	return app.recoveryPanic(app.rateLimit(router))
 }

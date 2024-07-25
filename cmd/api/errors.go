@@ -56,3 +56,8 @@ func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Requ
 	message := "невозможно обновить запись, конфликт редактирования или запись удалена"
 	app.errorResponse(w, r, http.StatusConflict, message)
 }
+
+func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
+	message := "Превышен лимит запросов"
+	app.errorResponse(w, r, http.StatusTooManyRequests, message)
+}
