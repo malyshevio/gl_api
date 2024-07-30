@@ -1,20 +1,32 @@
 ### Structure
 ```
-├─ /bin
-├─ /cmd
-│　└─ /api
-│　　　├─ healthcheck.go
-│　　　├─ helpers.go
-│　　　├─ main.go
-│　　　├─ movies
-│　　　└─ routers.go
-├─ /internal
-│　└─ /data
-│　　　└─ movies.go
-├─ /migration
-├─ /remote
-├─ go.mod
-└─ Makefile
+├── bin
+├── cmd
+│   └── api
+│       ├── errors.go
+│       ├── healthcheck.go
+│       ├── helpers.go
+│       ├── main.go
+│       ├── middleware.go
+│       ├── movies.go
+│       ├── routers.go
+│       └── server.go
+├── go.mod
+├── go.sum
+├── internal
+│   ├── data
+│   │   ├── filters.go
+│   │   ├── models.go
+│   │   ├── movies.go
+│   │   └── runtime.go
+│   ├── jsonlog
+│   │   └── jsonlog.go
+│   └── validator
+│       └── validator.go
+├── Makefile
+├── migrations
+├── README.md
+└── remote
 ```
 
 - `bin` собственно скомпилированный проект, подготовленный для деплоя например на прод
