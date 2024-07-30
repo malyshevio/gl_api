@@ -39,14 +39,15 @@
 
 ### Endpoints
 
-| Method | URL Pattern     | Handler            | Action                               |
-| ------ | --------------- | ------------------ | ------------------------------------ |
-| GET    | /v1/healthcheck | healthcheckHandler | Выведем немного информации о проекте |
-| GET    | /v1/movies/:id  | showMovieHandler   | Показать детали конкретного фильма   |
-| GET    | /v1/movies      | listMoviesHandler  | Отобразить все фильмы с фильтрами    |
-| POST   | /v1/movies      | createMovieHandler | Создать новый фильм                  |
-| PATCH  | /v1/movies/:id  | editMovieHandler   | Обновить информацию о фильме         |
-| DELETE | /v1/movies/:id  | deleteMovieHandler | Удалить фильм из базы                |
+| Method | URL Pattern     | Handler             | Action                               |
+| ------ | --------------- | ------------------- | ------------------------------------ |
+| GET    | /v1/healthcheck | healthcheckHandler  | Выведем немного информации о проекте |
+| GET    | /v1/movies/:id  | showMovieHandler    | Показать детали конкретного фильма   |
+| GET    | /v1/movies      | listMoviesHandler   | Отобразить все фильмы с фильтрами    |
+| POST   | /v1/movies      | createMovieHandler  | Создать новый фильм                  |
+| PATCH  | /v1/movies/:id  | editMovieHandler    | Обновить информацию о фильме         |
+| DELETE | /v1/movies/:id  | deleteMovieHandler  | Удалить фильм из базы                |
+| POST   | /v1/users       | registerUserHandler | Добавить нового пользователя         |
 
 
 ## Migrations
@@ -85,3 +86,16 @@ $ migrate -path=./migrations -database=$GL_API_DSN up
 | SIGKILL | Kill - прибить процесс                 |        | Нет      |
 | SIGTERM | Terminate - еще один сигнал завершения |        | Да       |
 
+## Пользователи
+
+### Добавление
+
+`POST /v1/users`
+
+```json
+{
+    "name": "Test test",
+    "email": "test@example.com",
+    "password": "password"
+}
+```
