@@ -1,0 +1,28 @@
+{{define "subject"}} Добро пожаловать {{end}}
+
+{{define "plainBody"}}
+Привет.
+
+Спасибо что присоединились к нашему серверу
+
+Для дальнейшего использования подготовлен ваш ID {{.ID}}
+
+Всего!
+{{end}}
+
+{{define "htmlBody"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Привет.</p>
+    <p>Спасибо что присоединились к нашему серверу</p>
+    <p>Для дальнейшего использования подготовлен ваш ID {{.ID}}</p>
+    <p>Всего!</p>
+</body>
+</html>
+{{end}}
