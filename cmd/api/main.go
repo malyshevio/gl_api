@@ -12,6 +12,7 @@ import (
 	_ "github.com/lib/pq"
 	"gl_api.malyshev.io/internal/data"
 	"gl_api.malyshev.io/internal/jsonlog"
+	"gl_api.malyshev.io/internal/mailer"
 )
 
 const version = "1.0.0" // just in case I don't generate it et
@@ -31,6 +32,13 @@ type config struct {
 		burst   int
 		enabled bool
 	}
+	smtp struct {
+		host     string
+		port     int
+		username string
+		password string
+		sender   string
+	}
 }
 
 // application hold the dependencies for HTTP handlers, helpers, middleware
@@ -38,6 +46,7 @@ type application struct {
 	config config
 	logger *jsonlog.Logger
 	models data.Models
+	mailer mailer.Mailer
 }
 
 func main() {
@@ -54,6 +63,12 @@ func main() {
 	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 2, "Максимальное количество запросов в секунду")
 	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 4, "Максимальное количество запросов одновнеменно")
 	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Включить ограничение запросов")
+
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "localhost", "SMTP host")
+	flag.IntVar(&cfg.smtp.port, "smtp-port", 2525, "SMTP port")
+	flag.StringVar(&cfg.smtp.username, "smtp-username", "", "SMTP username")
+	flag.StringVar(&cfg.smtp.password, "smtp-password", "", "SMTP password")
+	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "test@example.com", "SMTP sender")
 
 	flag.Parse()
 
@@ -75,6 +90,7 @@ func main() {
 		config: cfg,
 		logger: logger,
 		models: data.NewModels(db),
+		mailer: mailer.New(cfg.smtp.host, cfg.smtp.port, cfg.smtp.username, cfg.smtp.password, cfg.smtp.sender),
 	}
 
 	err = app.serve()
