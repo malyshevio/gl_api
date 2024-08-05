@@ -65,11 +65,11 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 		switch {
 		// use errors.As for general type of errors
 		case errors.As(err, &syntaxError):
-			return fmt.Errorf("Некоректрый формат JSON %d", syntaxError.Offset)
+			return fmt.Errorf("некоректрый формат JSON %d", syntaxError.Offset)
 
 			// use errors.Is for specific error
 		case errors.Is(err, io.ErrUnexpectedEOF):
-			return errors.New("В теле запроса есть ошибки форматирования")
+			return errors.New("в теле запроса есть ошибки форматирования")
 
 		case errors.As(err, &unmarshalTypeError):
 			if unmarshalTypeError.Field != "" {
@@ -143,4 +143,20 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 	}
 
 	return i
+}
+
+// background() метод для перехвата  паники внутри горутины
+func (app *application) background(fn func()) {
+	app.wg.Add(1)
+	go func() {
+		defer app.wg.Done()
+		defer func() {
+			if err := recover(); err != nil {
+				app.logger.PrintError(fmt.Errorf("%s", err), nil)
+			}
+		}()
+
+		// запускаем переданную функцию внутри горутины
+		fn()
+	}()
 }

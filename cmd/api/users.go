@@ -53,13 +53,12 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	go func() {
+	app.background(func() {
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl.html", user)
 		if err != nil {
 			app.logger.PrintError(err, nil)
 		}
-
-	}()
+	})
 
 	// не 200(ок) а 202(принято) поскольку ответ зависит от горутины сверху
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
