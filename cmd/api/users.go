@@ -48,18 +48,21 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 			v.AddError("email", "Пользователь с такой почтой уже существует")
 			app.failedValidationResponse(w, r, v.Errors)
 		default:
-			app.serverErrorResponse(w, r, err)
+			app.serverErrorResponse(w, r, err) // пишем лог в консоль чтобы не спровоцировать  повторный ответ от сервера
 		}
 		return
 	}
 
-	err = app.mailer.Send(user.Email, "user_welcome.tmpl.html", user)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-		return
-	}
+	go func() {
+		err = app.mailer.Send(user.Email, "user_welcome.tmpl.html", user)
+		if err != nil {
+			app.logger.PrintError(err, nil)
+		}
 
-	err = app.writeJSON(w, http.StatusCreated, envelope{"user": user}, nil)
+	}()
+
+	// не 200(ок) а 202(принято) поскольку ответ зависит от горутины сверху
+	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
