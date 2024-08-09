@@ -39,16 +39,17 @@
 
 ### Endpoints
 
-| Method | URL Pattern         | Handler             | Action                               |
-| ------ | ------------------- | ------------------- | ------------------------------------ |
-| GET    | /v1/healthcheck     | healthcheckHandler  | Выведем немного информации о проекте |
-| GET    | /v1/movies/:id      | showMovieHandler    | Показать детали конкретного фильма   |
-| GET    | /v1/movies          | listMoviesHandler   | Отобразить все фильмы с фильтрами    |
-| POST   | /v1/movies          | createMovieHandler  | Создать новый фильм                  |
-| PATCH  | /v1/movies/:id      | editMovieHandler    | Обновить информацию о фильме         |
-| DELETE | /v1/movies/:id      | deleteMovieHandler  | Удалить фильм из базы                |
-| POST   | /v1/users           | registerUserHandler | Добавить нового пользователя         |
-| PUT    | /v1/users/activated | activateUserHandler | Пользовательская активация аккаунта  |
+| Method | URL Pattern               | Handler                          | Action                                  |
+| ------ | ------------------------- | -------------------------------- | --------------------------------------- |
+| GET    | /v1/healthcheck           | healthcheckHandler               | Выведем немного информации о проекте    |
+| GET    | /v1/movies/:id            | showMovieHandler                 | Показать детали конкретного фильма      |
+| GET    | /v1/movies                | listMoviesHandler                | Отобразить все фильмы с фильтрами       |
+| POST   | /v1/movies                | createMovieHandler               | Создать новый фильм                     |
+| PATCH  | /v1/movies/:id            | editMovieHandler                 | Обновить информацию о фильме            |
+| DELETE | /v1/movies/:id            | deleteMovieHandler               | Удалить фильм из базы                   |
+| POST   | /v1/users                 | registerUserHandler              | Добавить нового пользователя            |
+| PUT    | /v1/users/activated       | activateUserHandler              | Пользовательская активация аккаунта     |
+| POST   | /vq/tokens/authentication | createAuthenticationTokenHandler | Генерация stateful authentication token |
 
 
 
