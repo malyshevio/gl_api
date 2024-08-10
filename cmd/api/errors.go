@@ -66,3 +66,10 @@ func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *htt
 	message := "недействительные данные пользователя"
 	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
+
+func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("WWW-Authenticate", "Bearer")
+
+	message := "отсутствует или неверный токен аутентификации"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
