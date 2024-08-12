@@ -73,3 +73,13 @@ func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter
 	message := "отсутствует или неверный токен аутентификации"
 	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
+
+func (app *application) authenticationRequiredResponse(w http.ResponseWriter, r *http.Request) {
+	message := "необходибо аутентификация для доступа к этому ресурсу"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
+func (app *application) inactiveAccountResponse(w http.ResponseWriter, r *http.Request) {
+	message := "ваш аккаунт должен быть активирован для доступа к этому ресурсу"
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}
