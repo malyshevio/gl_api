@@ -42,6 +42,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	// RETURNING to &user::  id, created_at, version (&user.ID, &user.CreatedAt, &user.Versio)
 	err = app.models.Users.Insert(user)
 	if err != nil {
 		switch {
@@ -51,6 +52,12 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		default:
 			app.serverErrorResponse(w, r, err) // пишем лог в консоль чтобы не спровоцировать  повторный ответ от сервера
 		}
+		return
+	}
+
+	err = app.models.Permissions.AddForUser(user.ID, "movies:read")
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
 		return
 	}
 

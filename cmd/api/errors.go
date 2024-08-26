@@ -83,3 +83,8 @@ func (app *application) inactiveAccountResponse(w http.ResponseWriter, r *http.R
 	message := "ваш аккаунт должен быть активирован для доступа к этому ресурсу"
 	app.errorResponse(w, r, http.StatusForbidden, message)
 }
+
+func (app *application) notPermittedResponse(w http.ResponseWriter, r *http.Request) {
+	message := "недостаточно привилегий для доступа"
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}

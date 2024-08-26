@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 // хранилище прав - слайс
@@ -58,4 +60,17 @@ func (m PermissionModel) GetAllForUser(userID int64) (Permissions, error) {
 	}
 
 	return permissions, nil
+}
+
+// AddForUser method добавляет права выбранному пользователю
+func (m PermissionModel) AddForUser(UserID int64, codes ...string) error {
+	query := `
+	INSERT INTO users_permissions
+	SELECT $1, permissions.id FROM permissions WHERE permissions.code = ANY($2)`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	_, err := m.DB.ExecContext(ctx, query, UserID, pq.Array(codes))
+	return err
 }
