@@ -13,11 +13,20 @@ const html = `
 	<meta charset="UTF-8">
 </head>
 <body>
-	<h1>Simple CORS</h1>
+	<h1>Preflight CORS</h1>
 	<div id="output"></div>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			fetch("http://localhost:4000/v1/healthcheck").then(
+			fetch("http://localhost:4000/v1/tokens/authentication", {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email: 'dodod@example.com',
+					password: 'password'
+				})
+			}).then(
 				function (response) {
 					response.text().then(function (text) {
 						document.getElementById("output").innerHTML = text;
@@ -37,7 +46,7 @@ func main() {
 	addr := flag.String("addr", ":9000", "Server address")
 	flag.Parse()
 
-	log.Printf("starting server on %s", *addr)
+	log.Printf("запуск сервера на %s", *addr)
 
 	err := http.ListenAndServe(*addr, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(html))
