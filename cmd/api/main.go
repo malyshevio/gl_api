@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"database/sql"
+	"expvar"
 	"flag"
 	"os"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -95,6 +97,22 @@ func main() {
 	defer db.Close()
 
 	logger.PrintInfo("database connection successfully established", nil)
+
+	// для роута отладки /debug/vars
+	// версия
+	expvar.NewString("version").Set(version)
+	// количество горутин
+	expvar.Publish("goroutines", expvar.Func(func() any {
+		return runtime.NumGoroutine()
+	}))
+	// пул подключений к БД
+	expvar.Publish("database", expvar.Func(func() any {
+		return db.Stats()
+	}))
+	// текущая метка времени unixtimestamp
+	expvar.Publish("timestamp", expvar.Func(func() any {
+		return time.Now().Unix()
+	}))
 
 	// create App instance
 	app := &application{

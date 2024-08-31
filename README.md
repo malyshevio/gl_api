@@ -50,6 +50,7 @@
 | POST   | /v1/users                 | registerUserHandler              |              | Добавить нового пользователя            |
 | PUT    | /v1/users/activated       | activateUserHandler              |              | Пользовательская активация аккаунта     |
 | POST   | /vq/tokens/authentication | createAuthenticationTokenHandler |              | Генерация stateful authentication token |
+| GET    | /debug                    | expvar.Handler()                 |              | Отображение метрик приложения           |
 
 
 
