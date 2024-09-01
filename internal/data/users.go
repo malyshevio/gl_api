@@ -81,7 +81,7 @@ func ValidateUser(v *validator.Validator, user *User) {
 }
 
 var (
-	ErrDuplicateEmail = errors.New("Дубль почты в базе")
+	ErrDuplicateEmail = errors.New("дубль почты в базе")
 )
 
 type UserModel struct {
