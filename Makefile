@@ -77,3 +77,12 @@ audit:
 	staticcheck ./...
 	@echo 'Запуск тестов'
 	go test -race -vet=off ./...
+
+## vendor: очистка зависимостей и вендоринг зависимостей
+.PHONY: vendor
+vendor:
+	@echo 'Проверка зависимостей и верификация модулей'
+	go mod tidy
+	go mod verify
+	@echo 'Вендоринг зависимостей'
+	go mod vendor
