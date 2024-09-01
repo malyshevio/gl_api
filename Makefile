@@ -1,3 +1,5 @@
+include .envrc
+
 ## help: выведет помощь
 .PHONY: help
 help:
@@ -7,7 +9,7 @@ help:
 ## run/api: запуск API cmd/api
 .PHONY: run/api
 run/api:
-	@go run ./cmd/api
+	@go run ./cmd/api -db-dsn=${GL_API_DSN}
 
 ## db/psql: подключение к базе консольным клиентом
 .PHONY: db/psql
@@ -31,6 +33,12 @@ db/migrations/new:
 test/echo:
 	echo 'unmuted ECHO'
 	@echo 'muted ECHO'
+
+## test/echo: как работает @
+.PHONY: test/env
+test/env:
+	@echo ${TEST_ECHO}
+
 
 .PHONY: confirm
 confirm:
