@@ -19,7 +19,7 @@ import (
 	"gl_api.malyshev.io/internal/mailer"
 )
 
-const version = "1.0.0" // just in case I don't generate it et
+const version = "1.0.0" // just in case I don't generate it yet
 
 // config hold all configuration settings
 type config struct {

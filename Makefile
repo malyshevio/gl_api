@@ -86,3 +86,16 @@ vendor:
 	go mod verify
 	@echo 'Вендоринг зависимостей'
 	go mod vendor
+
+
+# ============================================================================= #
+# BUILDING
+# ============================================================================= #
+
+## build/api: сборка бинарника приложения
+.PHONY: build/api
+build/api:
+	@echo 'Создание из cmd/api...'
+	go build -ldflags='-s' -o=./bin/api ./cmd/api
+	GOOS=linux GOARCH=amd64 go build -ldflags='-s' -o=./bin/linux_amd64/api ./cmd/api
+	
