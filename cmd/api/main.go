@@ -20,8 +20,10 @@ import (
 	"gl_api.malyshev.io/internal/mailer"
 )
 
-const version = "1.0.0" // just in case I don't generate it yet
-var buildTime string    // -X linker variable
+var (
+	version   string
+	buildTime string // -X linker variable
+)
 
 // config hold all configuration settings
 type config struct {

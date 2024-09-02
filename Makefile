@@ -93,7 +93,8 @@ vendor:
 # ============================================================================= #
 
 current_time = $(shell date --iso-8601=seconds)
-linker_flag = '-s -X main.buildTime=${current_time}'
+git_description = $(shell git describe --always --dirty)
+linker_flag = '-s -X main.buildTime=${current_time} -X main.version=${git_description}'
 
 ## build/api: сборка бинарника приложения
 .PHONY: build/api
