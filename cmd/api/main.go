@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"expvar"
 	"flag"
+	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -19,7 +20,10 @@ import (
 	"gl_api.malyshev.io/internal/mailer"
 )
 
-const version = "1.0.0" // just in case I don't generate it et
+var (
+	version   string
+	buildTime string // -X linker variable
+)
 
 // config hold all configuration settings
 type config struct {
@@ -83,7 +87,15 @@ func main() {
 		return nil
 	})
 
+	displayVersion := flag.Bool("version", false, "Отобразить текущую версию и выйти")
+
 	flag.Parse()
+
+	if *displayVersion {
+		fmt.Printf("Version:\t%s\n", version)
+		fmt.Printf("Build time:\t%s\n", buildTime)
+		os.Exit(0)
+	}
 
 	//init new logger
 	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)

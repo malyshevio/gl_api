@@ -86,3 +86,20 @@ vendor:
 	go mod verify
 	@echo 'Вендоринг зависимостей'
 	go mod vendor
+
+
+# ============================================================================= #
+# BUILDING
+# ============================================================================= #
+
+current_time = $(shell date --iso-8601=seconds)
+git_description = $(shell git describe --always --dirty --tags --long)
+linker_flag = '-s -X main.buildTime=${current_time} -X main.version=${git_description}'
+
+## build/api: сборка бинарника приложения
+.PHONY: build/api
+build/api:
+	@echo 'Создание из cmd/api...'
+	go build -ldflags=${linker_flag} -o=./bin/api ./cmd/api
+	GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flag} -o=./bin/linux_amd64/api ./cmd/api
+	
