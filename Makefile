@@ -121,4 +121,11 @@ production/connect:
 production/deploy/api:
 	rsync -P ./bin/linux_amd64/api gl@${production_host_ip}:~
 	rsync -rP --delete ./migrations gl@${production_host_ip}:~
-	ssh -t gl@${production_host_ip} 'migrate -path ~/migrations -database $$GL_API_DSN up'
+	rsync -P ./remote/production/api.service gl@${production_host_ip}:~
+
+	ssh -t gl@${production_host_ip} '\
+		migrate -path ~/migrations -database $$GL_API_DSN up \
+		&& sudo mv ~/api.service /etc/systemd/system/ \
+		&& sudo systemctl enable api \
+		&& sudo systemctl restart api \
+		'
