@@ -1,0 +1,26 @@
+[Unit]
+Description=GL API service
+
+After=postgresql.service
+After=network-online.target
+Wants=network-online.target
+
+# настройка лимита для перезапуска 5 запусков в 600 сек
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=exec
+User=gl
+Group=gl
+EnvironmentFile=/etc/environment
+WorkingDirectory=/home/gl
+ExecStart=/home/gl/api -port=4000 -db-dsn=${GL_API_DSN} -env=production
+
+# авто перезагрузка если выход не с Exit(0)
+Restart=on-failure
+RestartSec=5
+
+[Install]
+# стартовать автоматически когда система принимает логины
+WantedBy=multi-user.target
