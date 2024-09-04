@@ -101,5 +101,24 @@ linker_flag = '-s -X main.buildTime=${current_time} -X main.version=${git_descri
 build/api:
 	@echo 'Создание из cmd/api...'
 	go build -ldflags=${linker_flag} -o=./bin/api ./cmd/api
-	GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flag} -o=./bin/linux_amd64/api ./cmd/api
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flag} -o=./bin/linux_amd64/api ./cmd/api
 	
+
+# ============================================================================= #
+# PRODUCTION
+# ============================================================================= #
+
+production_host_ip = 'prod'
+
+## production/connect: Подключиться к проду
+.PHONY: production/connect
+production/connect:
+	ssh gl@${production_host_ip}
+
+
+## production/deploy/api: Выгрузить на прод обновление
+.PHONY: production/deploy/api
+production/deploy/api:
+	rsync -P ./bin/linux_amd64/api gl@${production_host_ip}:~
+	rsync -rP --delete ./migrations gl@${production_host_ip}:~
+	ssh -t gl@${production_host_ip} 'migrate -path ~/migrations -database $$GL_API_DSN up'
